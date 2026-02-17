@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "signaldeck-sdk"
+version = "0.1.0"
+description = "SignalDeck SDK (plugin API and base classes)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = ["pandas","asyncio"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["signaldeck_sdk*"]
