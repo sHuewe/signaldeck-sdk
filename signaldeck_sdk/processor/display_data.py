@@ -12,7 +12,6 @@ def transform_params(button_data,active, actionhash):
             
             if isinstance(button_data["params"][p], str):
                 if button_data["params"][p][0] == "@":
-                    print("jup: "+p)
                     button_data["params"][p] = button_data["params"][p]+"_"+str(actionhash)
         button_data["get_params"] = json.dumps(button_data["params"])
     return button_data
