@@ -1,7 +1,7 @@
 import asyncio
 import pandas as pd
 import logging
-from typing import List 
+from typing import List, Tuple 
 from pathlib import Path
 from ..cmd import Cmd
 from ..value_provider import ValueProvider
@@ -12,7 +12,7 @@ class Processor:
     def __init__(self,name,config,valueProvider,collect_data):
         self.config=config
         self.cachedFiles={}
-        self.ctx=None
+        self.ctx: ApplicationContext=None
         self.name=name
         self.className=None
         self.collect_data=collect_data
@@ -57,6 +57,20 @@ class Processor:
     def registerCommands(self, cmd: Cmd):
         return
 
+    def getAdditionalJsAndCssFiles(self,value):
+        return [self.ctx.url.forFile(f[0],f[1]) for f in self.getAdditionalJsFiles(value)], [self.ctx.url.forFile(f[0],f[1]) for f in self.getAdditionalCssFiles(value)]
+
+    def getAdditionalJsFiles(self,value) -> List[Tuple[str, str]]:
+        ''' 
+        Return a list of (pluginname, path) tuples for additional JS files to include in the frontend.
+        '''
+        return []
+    
+    def getAdditionalCssFiles(self,value) -> List[Tuple[str, str]]:
+        ''' 
+        Return a list of (pluginname, path) tuples for additional CSS files to include in the frontend.
+        '''
+        return []
 
     def refresh(self):
         if "values" in self.config:

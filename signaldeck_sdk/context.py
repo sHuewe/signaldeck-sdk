@@ -13,6 +13,11 @@ class Renderer(Protocol):
         """Render a template with kwargs and return HTML."""
         ...
 
+class UrlResolver(Protocol):
+    def forFile(self, pluginName: str, filePath: str) -> str:
+        """Return a URL for a file given its plugin name and path."""
+        ...
+
 @dataclass(frozen=True)
 class ApplicationContext:
     """
@@ -20,6 +25,7 @@ class ApplicationContext:
     Concrete implementation is provided by signaldeck-core.
     """
     renderer: Renderer
+    url: UrlResolver
     files: FileService
     values: Any  # can be typed to ValueProvider later
     logger: Any  # can be typed later (logging.Logger)
