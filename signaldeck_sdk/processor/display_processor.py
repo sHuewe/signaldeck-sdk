@@ -18,7 +18,7 @@ class DisplayProcessor(Processor):
         raise NotImplementedError("Processor must provide a template!")
 
     def getDisplayData(self,value,actionHash,**kwargs) -> DisplayData:
-        return DisplayData(actionHash)
+        return DisplayData(self.ctx, actionHash)
 
     def getBoolParams(self):
         return []

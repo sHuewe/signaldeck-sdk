@@ -2,10 +2,10 @@ from .context import ApplicationContext
 from .value_provider import ValueProvider
 from .cmd import Cmd, Command, EchoCommand, SleepCommand
 from .cmdResult import CmdResult
-from .processor.processor import Processor
+from .processor.processor import Processor, Placeholder
 from .processor.display_data import DisplayData
 from .processor.display_processor import DisplayProcessor
 from .persistence.data_store import DataStore
 from .persistence.field import Field
 from .persistence.persist_data import PersistData
-__all__ = ["ApplicationContext","CmdResult", "Cmd", "Command", "EchoCommand", "SleepCommand", "CmdResult", "Processor", "DisplayData", "DisplayProcessor", "DataStore", "Field", "PersistData", "ValueProvider"]
+__all__ = ["ApplicationContext","CmdResult", "Cmd", "Command", "EchoCommand", "SleepCommand", "CmdResult", "Processor", "Placeholder", "DisplayData", "DisplayProcessor", "DataStore", "Field", "PersistData", "ValueProvider"]

@@ -1,11 +1,21 @@
-import asyncio
+import asyncio, json
 import pandas as pd
 import logging
-from typing import List, Tuple 
+from dataclasses import dataclass
+from typing import List, Tuple, Any 
 from pathlib import Path
 from ..cmd import Cmd
+from importlib import resources
 from ..value_provider import ValueProvider
 from ..context import ApplicationContext
+
+@dataclass(frozen=True)
+class Placeholder:
+    name: str                 # e.g. "HOST" (matches $HOST$)
+    prompt: str               # what user sees
+    type: str = "str"         # str|int|float|bool|path|secret
+    default: Any | None = None
+    help: str | None = None
 
 class Processor:
 
@@ -19,6 +29,36 @@ class Processor:
         self.valueProvider: ValueProvider =valueProvider
         self.logger=logging.getLogger(__name__)
         self.valueProvider.registerProcessor(self,config.get("export",None))
+    
+    @classmethod
+    def default_config_resource(cls) -> str:
+        """
+        Relative resource path inside the plugin package.
+
+        Default convention:
+          samples/<ClassName>/config.json
+        """
+        return f"samples/{cls.__name__}/config.json"
+
+    @classmethod
+    def get_default_config(cls) -> dict[str, Any]:
+        """
+        Loads default config JSON shipped with the plugin package.
+        """
+        pkg = cls.__module__.split(".", 1)[0]  # root package of plugin
+        rel = cls.default_config_resource()
+
+        try:
+            data = resources.files(pkg).joinpath(rel).read_text(encoding="utf-8")
+        except FileNotFoundError as e:
+            return {}
+
+        return json.loads(data)
+
+
+    @classmethod
+    def config_placeholders(cls) -> List[Placeholder]:
+        return []
 
     def init(self,ctx: ApplicationContext):
         self.ctx=ctx

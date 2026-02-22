@@ -18,6 +18,15 @@ class UrlResolver(Protocol):
         """Return a URL for a file given its plugin name and path."""
         ...
 
+class Translator(Protocol):
+    def t(self, key: str, **kwargs) -> str:
+        """Translate a key with optional formatting kwargs."""
+        ...
+    
+    def load_from_packages(self, packages: list[str]) -> None:
+        """Load/merge translations from a list of packages."""
+        ...
+
 @dataclass(frozen=True)
 class ApplicationContext:
     """
@@ -27,8 +36,12 @@ class ApplicationContext:
     renderer: Renderer
     url: UrlResolver
     files: FileService
+    translator: Translator
     values: Any  # can be typed to ValueProvider later
     logger: Any  # can be typed later (logging.Logger)
 
     def render(self, template: str, **kwargs) -> str:
         return self.renderer.render(template, **kwargs)
+    
+    def t(self, key: str, **kwargs) -> str:
+        return self.translator.t(key, **kwargs)

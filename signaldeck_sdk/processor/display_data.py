@@ -1,5 +1,7 @@
 import json
 
+from ..context import ApplicationContext
+
 def transform_params(button_data,active, actionhash):
     if "params" in button_data:
         if active:
@@ -17,9 +19,13 @@ def transform_params(button_data,active, actionhash):
     return button_data
 
 class DisplayData:
-    def __init__(self,hash):
+    def __init__(self,ctx: ApplicationContext,hash):
         self.hash=hash
+        self.ctx=ctx
         self.buttons_to_display_cache=None
+        
+    def t(self, key, **kwargs):
+        return self.ctx.t(key, **kwargs)
 
     def withData(self,data):
         for key in data:
