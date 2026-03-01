@@ -62,7 +62,7 @@ class DisplayData:
         return self.buttons_to_display_cache
     
     def isButtonActive(self,buttonName):
-        button = self.buttons().get(buttonName)
+        button = self.buttons().get(buttonName,None)
         if button and "button_active_condition" in button:
             attr, expected_value = button["button_active_condition"]
             actual_value = getattr(self, attr, None)
