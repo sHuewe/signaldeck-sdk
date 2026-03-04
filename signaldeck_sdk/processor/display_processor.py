@@ -48,6 +48,9 @@ class DisplayProcessor(Processor):
     def getAdditionalInfoForClient(self,data:DisplayData):
         return {}
 
+    def getJS_functions_to_call_on_client(self, data:DisplayData):
+        return {}
+
     def processParams(self, **kwargs):
         for boolField in self.getBoolParams():
             if boolField in kwargs and kwargs[boolField] is not None:
@@ -83,4 +86,4 @@ class DisplayProcessor(Processor):
         data=self.getDisplayData(value,actionHash,**kwargs)
         if data is None:
             return {}
-        return {"html":  self.ctx.render(self.getTemplate(value),displayData=data),"stateChangeEvents":data.getStateChangeButtonData(),"data":data.getStateAsJson(),**self.getAdditionalInfoForClient(data)}
+        return {"html":  self.ctx.render(self.getTemplate(value),displayData=data),"stateChangeEvents":data.getStateChangeButtonData(),"data":data.getStateAsJson(),"js_functions":self.getJS_functions_to_call_on_client(data),**self.getAdditionalInfoForClient(data)}
